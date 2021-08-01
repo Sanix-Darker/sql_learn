@@ -3,32 +3,32 @@
 Note : Never forget the `;` at the end of the command.
 
 - To connect inside mysql database:
-```
+```bash
 mysql -u root -p password
 ```
 
 - To list databases
-```
+```sql
 SHOW DATABASES;
 ```
 
 - To Create the database
-```
+```sql
 CREATE DATABASE test_db;
 ```
 
 - To delete that database
-```
+```sql
 DROP DATABASE test_db;
 ```
 
 - To use a database:
-```
+```sql
 USE test_db;
 ```
 
 - To create a new table:
-```
+```sql
 CREATE TABLE `table_x`(
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(30) NOT NULL,
@@ -39,27 +39,27 @@ CREATE TABLE `table_x`(
 ```
 
 - To show tables:
-```
+```sql
 SHOW TABLES;
 ```
 
 - To describe the structure of a table:
-```
+```sql
 DESCRIBE `table_1`;
 ```
 
 - To insert a new row inside a table :
-```
+```sql
 INSERT INTO `table_x VALUES(1, 'darker', 27, '2021/07/30')`
 ```
 
 - To Select everything from the table :
-```
+```sql
 SELECT * FROM `table_x`
 ```
 
 - To prevent duplication when we are fetching elements:
-```
+```sql
 SELECT DISTINCT `age` FROM `people`
 ```
 
@@ -83,12 +83,12 @@ INSERT INTO table (col1, col2) VALUES("ok", "ok2");
 ```
 
 - For updates
-```
+```sql
 UPDATE table_x SET columnx="element" WHERE columny="another-thing";
 ```
 
 - FOr the deletes
-```
+```sql
 DELETE FROM target WHERE column="xxx";
 ```
 
@@ -137,12 +137,14 @@ SELECT LENGTH(firstname) as length FROM table1;
 ```
 
 ### CONSTRAINTS
-```
+```sql
 UNIQUE
 NOT NULL
+DEFAULT ''
 ```
 
 ### PRIMARY KEY / FOREIGN KEY
+
 ```sql
 -- We create the database
 CREATE DATABASE shop;
@@ -184,7 +186,8 @@ CREATE TABLE orders(
 
 ```
 
-# Alter a table
+### Alter a table
+
 ```sql
 ALTER TABLE target
 ADD COLUMN columnx INT(10) NOT NULL AFTER columny;
@@ -194,7 +197,8 @@ ALTER TABLE Orders
 ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ```
 
-## Extrats
+### Extrats
+
 ```sql
 -- to order by something and we can reverse with DESC
 ORDER BY attr -- we can order with multiple attributes
@@ -210,3 +214,12 @@ SELECT * FROM employee WHERE REGEXP 'field|mac|rose'
 
 SELECT LAST_INSERT_ID();
 ```
+
+### TRIGGERS
+```
+DELIMITTER $$
+CREATE
+    TRIGGER triggerx....
+
+    END$$
+DELIMITTER ;
