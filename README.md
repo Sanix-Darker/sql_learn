@@ -256,6 +256,17 @@ ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 -- to rename also a column
 ALTER TABLE customers
 RENAME COLUMN c_id TO cid;
+
+-- to modify a column data type already set
+ALTER TABLE customers
+MODIFY COLUMN xxx VARCHAR(100);
+
+-- We can also move a column from its original order
+-- considering | name | age | date |
+-- To move `date` before `age` :
+ALTER TABLE customers
+MODIFY age INT
+AFTER name; -- Or for it to be the first column, just say FIRST; here.
 ```
 
 ### EXTRATS
