@@ -1,8 +1,15 @@
 # SQL CLI USEFULL TO KNOW
 
-Note : Never forget the `;` at the end of the command.
+> S: Structured
+> Q: Query
+> L: Language
+
+> DBMS (Database Management System)
+
+NOTE : Never forget the `;` at the end of the command.
 
 - To connect inside mysql database:
+
 ```bash
 mysql -u root -p password
 ```
@@ -161,8 +168,10 @@ CREATE TABLE IF NOT EXISTS customers(
     PRIMARY KEY (customer_id)
 );
 
-INSERT INTO customers (name, location) VALUES("sanix", "france");
-SELECT * FROM customers WHERE location="france";
+INSERT INTO customers (name, location) VALUES("tangua", "cameroun");
+
+SELECT * FROM customers;
+SELECT * FROM customers WHERE location IN ("france", "usa");
 
 CREATE TABLE IF NOT EXISTS products(
     product_id INT NOT NULL AUTO_INCREMENT,
@@ -173,19 +182,43 @@ CREATE TABLE IF NOT EXISTS products(
     PRIMARY KEY(product_id)
 );
 
+INSERT INTO products (name, description) VALUES("VABOUM", "short and quite range");
+SELECT * FROM products;
 
+ALTER TABLE products
+RENAME COLUMN product_id TO pid;
+
+DROP TABLE orders;
 -- And we link them
 CREATE TABLE orders(
-    order_id INT NOT NULL AUTO_INCREMENT,
+    oid INT NOT NULL AUTO_INCREMENT,
 
     product_id INT NOT NULL,
     quantity INT(10) NOT NULL,
     customer_id INT NOT NULL,
 
-    PRIMARY KEY (order_id),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
+    PRIMARY KEY (oid),
+    FOREIGN KEY (customer_id) REFERENCES customers(cid),
+    FOREIGN KEY (product_id) REFERENCES products(pid)
 );
+
+SELECT * FROM orders;
+INSERT INTO orders(product_id, quantity, customer_id) VALUES(1, 12, 1);
+INSERT INTO orders(product_id, quantity, customer_id) VALUES(3, 10, 2);
+INSERT INTO orders(product_id, quantity, customer_id) VALUES(2, 3, 1);
+
+SELECT
+    c.name AS user,
+    p.name AS product,
+    o.quantity AS quantity
+FROM orders o
+LEFT OUTER JOIN products p ON o.product_id = p.pid
+LEFT OUTER JOIN customers c ON o.customer_id = c.cid
+ORDER BY o.quantity ASC;
+
+-- LEFT OUTER JOIN (with no NULL NULL items)
+-- RIGHT OUTER JOIN (with NULL NULL items allowed)
+-- ON same as WHERE
 
 ```
 
@@ -199,6 +232,10 @@ ADD COLUMN columnx INT(10) NOT NULL AFTER columny;
 -- or to add a foreign key
 ALTER TABLE Orders
 ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+-- to rename also a column
+ALTER TABLE customers
+RENAME COLUMN c_id TO cid;
 ```
 
 ### EXTRATS
