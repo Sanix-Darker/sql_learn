@@ -14,6 +14,8 @@ NOTE : Never forget the `;` at the end of the command.
 mysql -u root -p password
 ```
 
+### DATABASES
+
 - To list databases
 ```sql
 SHOW DATABASES;
@@ -33,6 +35,16 @@ DROP DATABASE test_db;
 ```sql
 USE test_db;
 ```
+
+- It's possible to Alter a database
+```sql
+ALTER DATABASE test_db READ ONLY = 1;
+-- no modif... just access to it.
+-- so the DROP will not work.
+-- to reset rerun the ALTER query with ONLY = 0;
+```
+
+### TABLES
 
 - To create a new table:
 ```sql
@@ -100,6 +112,7 @@ DELETE FROM target WHERE column="xxx";
 ```
 
 ### JOIN, INNER_JOIN, OUTER_JOIN(left, right, full), CROSS_JOIN
+
 ```sql
 SELECT * FROM table1 INNER JOIN table2 ON table1.col1=table2.col2;
 -- we can also do LEFT JOIN and RIGHT JOIN
