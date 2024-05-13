@@ -95,17 +95,15 @@ DELETE FROM target WHERE column="xxx";
 ### JOIN, INNER_JOIN, OUTER_JOIN(left, right, full), CROSS_JOIN
 ```sql
 SELECT * FROM table1 INNER JOIN table2 ON table1.col1=table2.col2;
--- we can also do EFT JOIN and RIGHT JOIN
+-- we can also do LEFT JOIN and RIGHT JOIN
 
-
--- we got a lot of output but in the left, and the right are NUll if there are not existing
+-- we got a lot of output but in the LEFT, and the RIGHT are NUll if there are not existing
 SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col1=table2.col2;
 -- Same logic wih the RIGHT OUTER JOIN
 
 
--- The FULL is a combination of the LEFT and the right using UNION
+-- The FULL is a combination of the LEFT and the RIGHT using UNION
 SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col1=table2.col2 UNION SELECT * FROM table2 RIGHT OUTER JOIN table2 ON table1.col1=table2.col2;
-
 
 -- The cross join select for each element all link to the second table
 SELECT * FROM table1 CROSS JOIN table2;
@@ -126,17 +124,19 @@ SELECT MIN(col1) AS min_col FROM table1;
 -- SUM
 SELECT SUM(col1) AS sum_col FROM table1;
 
--- UCASE / LCASE (For uppercase a column and lower case it)
+-- UCASE / LCASE (For uppercase string in a column and lower case it)
 SELECT * FROM UCASE(col1) as ucase_col1 FROM table1;
 
--- MID to cut the string we'r getting, as parameter(the column, the start point and the number of characters, we want to cut from)
+-- MID to cut the string we'r getting, as parameter
+-- (the column, the start point and the number of characters, we want to cut from)
 SELECT MID(firstname, 1, 4) as nn FROM table1;
 
--- TO Calculate the lenght of a column its LENGTH
+-- TO Calculate the lenght of a column
 SELECT LENGTH(firstname) as length FROM table1;
 ```
 
 ### CONSTRAINTS
+
 ```sql
 UNIQUE
 NOT NULL
@@ -152,7 +152,7 @@ CREATE DATABASE shop;
 USE shop;
 
 -- We create the table
-CREATE TABLE customers(
+CREATE TABLE IF NOT EXISTS customers(
     customer_id INT NOT NULL AUTO_INCREMENT,
 
     name VARCHAR(20),
@@ -161,13 +161,16 @@ CREATE TABLE customers(
     PRIMARY KEY (customer_id)
 );
 
-CREATE TABLE products(
+INSERT INTO customers (name, location) VALUES("sanix", "france");
+SELECT * FROM customers WHERE location="france";
+
+CREATE TABLE IF NOT EXISTS products(
     product_id INT NOT NULL AUTO_INCREMENT,
 
     name VARCHAR(20) NOT NULL,
-    description TEXT DEFAULT 'Product description',
+    description VARCHAR(100) DEFAULT "Product description",
 
-    PRIMARY KEY(product_id),
+    PRIMARY KEY(product_id)
 );
 
 
@@ -186,9 +189,10 @@ CREATE TABLE orders(
 
 ```
 
-### Alter a table
+### ALTER A TABLE
 
 ```sql
+-- to add a new column
 ALTER TABLE target
 ADD COLUMN columnx INT(10) NOT NULL AFTER columny;
 
@@ -197,14 +201,12 @@ ALTER TABLE Orders
 ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ```
 
-### Extrats
+### EXTRATS
 
 ```sql
 -- to order by something and we can reverse with DESC
-ORDER BY attr -- we can order with multiple attributes
-
+ORDER BY attr (DESC/ASC)-- we can order with multiple attributes
 LIMIT 3
-
 WHERE attr IN ('test', 'test2')
 
 -- We can also use REGEXP
@@ -216,7 +218,8 @@ SELECT LAST_INSERT_ID();
 ```
 
 ### TRIGGERS
-```
+
+```sql
 DELIMITTER $$
 CREATE
     TRIGGER triggerx....

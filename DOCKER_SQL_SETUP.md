@@ -36,9 +36,15 @@ $(docker ps | grep mysql | awk '{print $1}')
 then play with some queries:
 
 ```sql
+DROP TABLE titi;
+
 CREATE TABLE IF NOT EXISTS titi (id INT, name VARCHAR(10));
-INSERT INTO titi (id, name) VALUES(12, "baba");
+INSERT INTO titi (id, name) VALUES(12, "baba"), (1, "zik"), (12, "zok");
 SELECT * FROM titi;
+
+UPDATE titi
+SET name = "DOUMBA"
+WHERE id = 12;
 ```
 
 #### POSTGRESQL
@@ -58,7 +64,7 @@ docker run -d --rm --env-file .env.psql -p 5432:5432 postgres:latest
 ```sql
 CREATE SCHEMA tata;
 CREATE TABLE IF NOT EXISTS tata.titi (id INT, name VARCHAR(10));
-INSERT INTO tata.titi (id, name) VALUES (12, 'baba');
+INSERT INTO tata.titi (id, name) VALUES (11, 'bobo');
 SELECT * FROM tata.titi;
 DELETE FROM tata.titi WHERE 1=1;
 ```
