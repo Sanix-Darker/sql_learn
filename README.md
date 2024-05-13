@@ -52,7 +52,9 @@ CREATE TABLE `table_x`(
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(30) NOT NULL,
     `age` INT NOT NULL,
-    `date` VARCHAR(15),
+    `date` DATE,
+    `price` DECIMAL(5, 2),
+
     PRIMARY KEY (id)
 );
 ```
@@ -65,6 +67,11 @@ SHOW TABLES;
 - To describe the structure of a table:
 ```sql
 DESCRIBE `table_1`;
+```
+
+- To rename a table
+```sql
+RENAME TABLE table_1 TO table_11;
 ```
 
 - To insert a new row inside a table :
