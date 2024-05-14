@@ -69,6 +69,12 @@ SHOW TABLES;
 DESCRIBE `table_1`;
 ```
 
+- To list columns from a table:
+```sql
+SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS
+WHERE table_name = "titi";
+```
+
 - To rename a table
 ```sql
 RENAME TABLE table_1 TO table_11;
@@ -321,3 +327,29 @@ CREATE
 
     END$$
 DELIMITTER ;
+```
+
+### TRANSACTIONS
+
+- AUTOCOMMIT (COMMIT /ROLLBACK) -- for changes
+
+By default it's on `ON`.
+It is a good idea to have it set on `OFF`.
+To UNDO precedent SQL queries
+```sql
+SET AUTOCOMMIT = OFF;
+ -- to create a save point.
+COMMIT;
+
+SELECT * FROM titi;
+INSERT INTO titi (id, name) VALUES(21, "doum"), (0, "ack");
+SELECT * FROM titi;
+
+-- let say i made now an error and i deleted all rows.
+DELETE FROM titi;
+SELECT * FROM titi;
+
+-- to rollback, i just need to call ROLLBACK;
+ROLLBACK;
+SELECT * FROM titi;
+```
