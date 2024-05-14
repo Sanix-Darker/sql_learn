@@ -53,7 +53,7 @@ CREATE TABLE `table_x`(
     `name` VARCHAR(30) NOT NULL,
     `age` INT NOT NULL,
     `date` DATE,
-    `price` DECIMAL(5, 2),
+    `price` DECIMAL(5, 2), -- 5 is the maximum digit and 2 the precision.
 
     PRIMARY KEY (id)
 );
@@ -286,6 +286,10 @@ DROP COLUMN columnx;
 ALTER TABLE Orders
 ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 
+-- to add a specific constraints to a column
+ALTER TABLE Orders
+ADD CONSTRAINT UNIQUE(column_y);
+
 -- to rename also a column
 ALTER TABLE customers
 RENAME COLUMN c_id TO cid;
@@ -300,6 +304,11 @@ MODIFY COLUMN xxx VARCHAR(100);
 ALTER TABLE customers
 MODIFY age INT
 AFTER name; -- Or for it to be the first column, just say FIRST; here.
+
+-- We can also add a CHECK constraint for next future values evaluation before storing them.
+ALTER TABLE tracked
+ADD CONSTRAINT CHECK(rate < 10); -- we can put a custom name for each constraint we create, either way it will generated automatically.
+-- on a chnage if the rate value is > 10, it will raise and error.
 ```
 
 ### EXTRATS
