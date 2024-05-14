@@ -309,6 +309,10 @@ AFTER name; -- Or for it to be the first column, just say FIRST; here.
 ALTER TABLE tracked
 ADD CONSTRAINT CHECK(rate < 10); -- we can put a custom name for each constraint we create, either way it will generated automatically.
 -- on a chnage if the rate value is > 10, it will raise and error.
+
+-- it's also possible to drop a CHECK constraint
+ALTER TABLE tracked
+DROP CHECK xxxx_chk;
 ```
 
 ### EXTRATS
