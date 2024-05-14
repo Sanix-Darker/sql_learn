@@ -100,8 +100,10 @@ SELECT * FROM `students` WHERE `age` BETWEEN 20 AND 22;
 -- Fetch with updates on the output
 SELECT name, (marks-10) as `new_marks` FROM students WHERE val=12;
 ```
+
 - For many insertions:
-```
+
+```sql
 INSERT INTO table VALUES ('elt'), ('elt2'), ('elt3');
 
 -- or smarter
@@ -111,11 +113,23 @@ INSERT INTO table (col1, col2) VALUES("ok", "ok2");
 - For updates
 ```sql
 UPDATE table_x SET columnx="element" WHERE columny="another-thing";
+
+-- to update multiple columns at the same time :
+UPDATE table_x
+SET col1 = "aaa", col2 = "bbb"
+WHERE col3 = 1;
+
+-- We can also update a whole column independantly of a specific line
+UPDATE table_y
+SET col_z = "aox"
+-- no WEHRE clause
 ```
 
-- FOr the deletes
+- For the deletes
 ```sql
 DELETE FROM target WHERE column="xxx";
+
+-- if WHERE clause is missing it will delete all rows;
 ```
 
 ### JOIN, INNER_JOIN, OUTER_JOIN(left, right, full), CROSS_JOIN
@@ -188,10 +202,19 @@ CREATE TABLE IF NOT EXISTS customers(
     PRIMARY KEY (customer_id)
 );
 
-INSERT INTO customers (name, location) VALUES("tangua", "cameroun");
+DESCRIBE TABLE customers;
 
+INSERT INTO customers (name, location) VALUES("tangua", "cameroun");
+INSERT INTO customers (name, location) VALUES ("acid", "india"), ("balo", "rdc");
+
+UPDATE customers
+SET location = "xxx", name = "yyy"
+WHERE cid = 2;
 SELECT * FROM customers;
+
 SELECT * FROM customers WHERE location IN ("france", "usa");
+
+-- IS (NOT) NULL
 
 CREATE TABLE IF NOT EXISTS products(
     product_id INT NOT NULL AUTO_INCREMENT,
@@ -248,6 +271,10 @@ ORDER BY o.quantity ASC;
 -- to add a new column
 ALTER TABLE target
 ADD COLUMN columnx INT(10) NOT NULL AFTER columny;
+
+-- and to drop a column
+ALTER TABLE target
+DROP COLUMN columnx;
 
 -- or to add a foreign key
 ALTER TABLE Orders
