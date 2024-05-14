@@ -326,6 +326,12 @@ DROP CHECK xxxx_chk;
 -- To alter table to set a default value:
 ALTER TABLE tracked
 ALTER COLUMN SET DEFAULT "xxx";
+
+-- It's possible to set the AUTO_INCREMENT to another
+-- value than 1 when it start counting
+ALTER TABLE table_x
+AUTO_INCREMENT = 100;
+-- now on, the incrementation will be started at 100, 101, 102..
 ```
 
 ### EXTRATS
