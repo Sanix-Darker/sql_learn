@@ -39,7 +39,7 @@ USE test_db;
 - It's possible to Alter a database
 ```sql
 ALTER DATABASE test_db READ ONLY = 1;
--- no modif... just access to it.
+-- no modif... just access to it (read only).
 -- so the DROP will not work.
 -- to reset rerun the ALTER query with ONLY = 0;
 ```
@@ -49,7 +49,7 @@ ALTER DATABASE test_db READ ONLY = 1;
 - To create a new table:
 ```sql
 CREATE TABLE `table_x`(
-    `id` INT AUTO_INCREMENT,
+    `id` INT AUTO_INCREMENT,  -- PRIMARY KEY,
     `name` VARCHAR(30) NOT NULL,
     `age` INT NOT NULL,
     `date` DATE,
@@ -293,6 +293,11 @@ ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 -- to add a specific constraints to a column
 ALTER TABLE Orders
 ADD CONSTRAINT UNIQUE(column_y);
+
+-- to add a primary key constraint
+ALTER TABLE tracked
+ADD CONSTRAINT
+PRIMARY KEY(column_x);
 
 -- to rename also a column
 ALTER TABLE customers
