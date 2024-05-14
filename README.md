@@ -49,15 +49,19 @@ ALTER DATABASE test_db READ ONLY = 1;
 - To create a new table:
 ```sql
 CREATE TABLE `table_x`(
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT AUTO_INCREMENT,
     `name` VARCHAR(30) NOT NULL,
     `age` INT NOT NULL,
     `date` DATE,
-    `price` DECIMAL(5, 2), -- 5 is the maximum digit and 2 the precision.
+    -- 5 is the maximum digit and 2 the precision.
+    `price` DECIMAL(5, 2),
 
     PRIMARY KEY (id)
 );
 ```
+
+NOTE `PRIMARY KEY` == `UNIQUE` and `NOT NULL`
+(so no need to specify that twice).
 
 - To show tables:
 ```sql
@@ -313,6 +317,10 @@ ADD CONSTRAINT CHECK(rate < 10); -- we can put a custom name for each constraint
 -- it's also possible to drop a CHECK constraint
 ALTER TABLE tracked
 DROP CHECK xxxx_chk;
+
+-- To alter table to set a default value:
+ALTER TABLE tracked
+ALTER COLUMN SET DEFAULT "xxx";
 ```
 
 ### EXTRATS
