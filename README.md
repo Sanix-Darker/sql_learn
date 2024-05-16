@@ -282,13 +282,22 @@ ORDER BY o.quantity ASC;
 ALTER TABLE target
 ADD COLUMN columnx INT(10) NOT NULL AFTER columny;
 
--- and to drop a column
+-- And to drop a column
 ALTER TABLE target
 DROP COLUMN columnx;
 
--- or to add a foreign key
+-- Or to add a foreign key
 ALTER TABLE Orders
 ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+-- or
+ALTER TABLE Orders
+ADD CONSTRAINT xxx_2
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+-- It's also possible to drop a FOREIGH KEY
+-- only if we have its name;
+ALTER TABLE Orders
+DROP FOREIGH KEY xxx_2;
 
 -- to add a specific constraints to a column
 ALTER TABLE Orders

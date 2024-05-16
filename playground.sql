@@ -133,3 +133,14 @@ VALUES
     ("abbx",2);
 
 SELECT * FROM xxx;
+-- INNER joins ( [x) ]
+SELECT col1, colA
+FROM xxx x
+INNER JOIN yyy y
+ON y.id = x.f_col4;
+
+-- LEFT join (x[) ]
+SELECT col1, colA
+FROM xxx x
+RIGHT OUTER JOIN yyy y
+ON y.id = x.f_col4;
