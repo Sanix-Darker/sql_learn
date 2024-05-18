@@ -313,37 +313,26 @@ AUTO_INCREMENT = 100;
 -- now on, the incrementation will be started at 100, 101, 102..
 ```
 
-### EXTRATS
-
-```sql
--- to order by something and we can reverse with DESC
-ORDER BY attr (DESC/ASC)-- we can order with multiple attributes
--- or
--- we can also order by multiple attrs.
-ORDER BY attr1 DESC, attr2 ASC
--- limit
-LIMIT 3
-LIMIT 10 OFFSET 3;
-WHERE attr IN ('test', 'test2')
-
--- We can also use REGEXP
-SELECT * FROM employee WHERE REGEXP 'field|mac|rose'
--- or '[gim]e' means ie ge me
--- or '[a-h]e' a or b or c ...h with e
-
-SELECT LAST_INSERT_ID();
-```
-
 ### TRIGGERS
 
+- To Create a trigger on update for product to set new value.
 ```sql
 DELIMITTER $$
 CREATE
     TRIGGER triggerx....
-
+        BEFORE/AFTER UPDATE ON table_y
+        FOR EACH ROW
+        UPDATE table_x -- only if table_x is different from the other table_y
+        SET price = (NEW.amount * 1.0)
     END$$
 DELIMITTER ;
 ```
+
+- To show triggers
+```sql
+SHOW TRIGGERS;
+```
+
 
 ### TRANSACTIONS
 
@@ -492,4 +481,81 @@ reg_date        $
 2024-05-17      0
 2024-05-18      39
 NULL            1249 --<<< it gave a GRAND TOTAL result
+```
+
+## STORED PROCEDURE
+
+Queries we can saved on the SGBD and just call when needed.
+
+To create a new procedure:
+```sql
+-- we need to change the delimiter for the instruction
+-- and also for the procedure set
+-- this will help us use the ';' only from the stoed procedure and use
+-- $$ as the the delimiter to create the procedure.
+
+DELIMITER $$
+
+CREATE PROCEDURE get_products()
+BEGIN
+    SELECT * FROM products;
+END $$
+
+DELIMITER ;
+
+CALL get_products();
+```
+
+For a procedure with param as function :
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE get_product_by_name(IN search_name VARCHAR(50)) -- this can take multiple items with the data type
+BEGIN
+    SELECT * FROM products WHERE name = search_name;
+END $$
+
+DELIMITER ; -- we reset ';' as the delimiter for instructions.
+
+-- then we can use it
+CALL get_product_by_name("this");
+```
+
+To drop a stored procedure :
+```sql
+DROP PROCEDURE get_products;
+```
+
+### EXTRATS
+
+```sql
+-- to order by something and we can reverse with DESC
+ORDER BY attr (DESC/ASC)-- we can order with multiple attributes
+-- or
+-- we can also order by multiple attrs.
+ORDER BY attr1 DESC, attr2 ASC
+-- limit
+LIMIT 3
+LIMIT 10 OFFSET 3;
+WHERE attr IN ('test', 'test2')
+
+-- it's possible to update all columns based on existing values
+-- programattically
+UPDATE products
+SET size_name = LENGTH(name);
+
+-- We can also use REGEXP
+SELECT * FROM employee WHERE REGEXP 'field|mac|rose'
+-- or '[gim]e' means ie ge me
+-- or '[a-h]e' a or b or c ...h with e
+
+SELECT LAST_INSERT_ID();
+
+-- Allow deleting items even with FOREIGN KEYS sets
+-- on other tables.
+SET foreign_key_checks = 1;
+
+-- usualy used in the CREATE table  statement.
+ON DELETE SET NULL -- When FK deleted, replace fk with NULL;
+ON DELETE CASCADE -- When FK deleted, delete whole row;
 ```
