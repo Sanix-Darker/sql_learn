@@ -171,6 +171,17 @@ SELECT tid, sess FROM tracked
 UNION
 SELECT cid, name  FROM customers;
 
+-- UNION does not inclue duplicated, but 'UNION ALL' allow duplicated values.
+
+-- We can also do SELF JOIN by joining a table by it's own clone
+-- For example :
+SELECT
+    a.name, a.code, CONCAT(b.name, " ", b.code) AS "from"
+FROM customers a
+-- LEFT JOIN/ RIGHT JOIN(to take into account left or right side admiting empty values)
+INNER JOIN customers b
+ON a.c_id = b.referral_id;
+
 -- The cross join select for each element all link to the second table
 SELECT * FROM table1 CROSS JOIN table2;
 ```
@@ -358,3 +369,112 @@ SELECT * FROM titi;
 ROLLBACK;
 SELECT * FROM titi;
 ```
+
+## VIEWS
+
+Virtuals tables from a result-set of an SQL statement.
+
+To create a view :
+```sql
+CREATE VIEW products_upper_than_0 AS
+    SELECT * FROM products WHERE price > 0;
+```
+
+We can then access datas from those views:
+```sql
+SELECT * FROM products_upper_than_0;
+```
+
+*NOTE:* Views are always up to date, this means, that if the table is updated (new records, deleted ones) the view
+will always contains the up to date datas. But not for new columns added.
+
+And to delete :
+```sql
+DROP VIEW products_upper_than_0;
+```
+
+## INDEXES
+
+- Ideal for selecting/searching datas.
+- Not suitable for updating frequently.
+
+So when creating indexes on a table, we should make sure the table
+will be mostly requested for selecting datas.
+
+By default indexes are primary keys.
+
+- To show current index of a table
+```sql
+SHOW INDEX FROM products;
+-- or
+SHOW INDEXES FROM products;
+```
+
+- To create an INDEX on a column from a table.
+```sql
+CREATE INDEX p_name
+ON products(name);
+```
+
+- We can also create a `multi column index` for multiple column a single index at the same time.
+```sql
+CREATE INDEX name_price
+ON products(name, price);
+```
+
+- To Drop an INDEX:
+```sql
+ALTER TABLE products
+DROP INDEX name_price;
+```
+
+## SUBQUERIES
+
+For example, mixing the count of product with a custom COUNT statement:
+```sql
+SELECT
+    name, price,
+    (SELECT COUNT(*) FROM products WHERE price > 0) as count_product_upper_0
+FROM products;
+```
+
+Or use in Where clause to compare with the average price amoung the table:
+```sql
+SELECT
+    name, price
+FROM products
+    WHERE price >= (SELECT AVG(price) FROM products);
+```
+
+Another example:
+```sql
+SELECT name
+FROM  customers
+WHERE customer_id in (SELECT DISTINCT customer_id FROM transactions WHERE customer_id IS NOT NULL);
+```
+
+## GROUP BY
+
+We can group results based on a specific column for a specific aggregation function
+In this example we're using average :
+```sql
+SELECT reg_date, AVG(price) as avg_price FROM products GROUP BY reg_date;
+
+-- We can even store results in a VIEW...
+CREATE VIEW count_view_product AS
+    SELECT reg_date, COUNT(*) as count_product FROM products GROUP BY reg_date;
+SELECT * FROM count_view_product;
+```
+
+To Use the WHERE clause in an ORDER BY, we should use the `HAVING` clause instead.
+
+```sql
+SELECT * FROM customers
+GROUP BY registered_id
+HAVING price > 10;
+```
+
+## ROLLUP
+
+It's an extension of GROUP BY
+but produces anthoer row for the GRAND TOTAL
