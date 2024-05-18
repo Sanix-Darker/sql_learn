@@ -478,3 +478,18 @@ HAVING price > 10;
 
 It's an extension of GROUP BY
 but produces anthoer row for the GRAND TOTAL
+Example:
+
+```sql
+SELECT * FROM products;
+
+SELECT reg_date, SUM(price) AS "$" FROM products
+GROUP BY reg_date WITH ROLLUP;
+
+reg_date        $
+---------------------
+2024-05-16      1210
+2024-05-17      0
+2024-05-18      39
+NULL            1249 --<<< it gave a GRAND TOTAL result
+```
