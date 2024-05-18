@@ -99,10 +99,13 @@ SELECT * FROM `table_x`
 SELECT DISTINCT `age` FROM `people`
 ```
 
-- The `WHERE` clause for conditions and/or:
+- The `WHERE` clause for conditions and/or... LIKE or BETWEEN:
 ```sql
 -- With some interesting operators
 SELECT * FROM `people` FROM `people` WHERE `age`<28 AND (`points` > 12 OR `sub_points` <= 12) AND `name` LIKE 'd%';
+
+-- Instead of %, we can also use __
+SELECT * FROM test WHERE xxx LIKE "___-02-__";
 
 -- another interesting keywords
 SELECT * FROM `students` WHERE `age` BETWEEN 20 AND 22;
@@ -152,9 +155,21 @@ SELECT * FROM table1 INNER JOIN table2 ON table1.col1=table2.col2;
 SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col1=table2.col2;
 -- Same logic wih the RIGHT OUTER JOIN
 
-
 -- The FULL is a combination of the LEFT and the RIGHT using UNION
-SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col1=table2.col2 UNION SELECT * FROM table2 RIGHT OUTER JOIN table2 ON table1.col1=table2.col2;
+SELECT *
+FROM table1
+LEFT OUTER JOIN table2
+    ON table1.col1=table2.col2
+UNION
+    SELECT * FROM table2
+        RIGHT OUTER JOIN table2
+    ON table1.col1=table2.col2;
+
+-- We can display two tables besides as soon as they have the same amount of columns.
+-- With the UNION key.
+SELECT tid, sess FROM tracked
+UNION
+SELECT cid, name  FROM customers;
 
 -- The cross join select for each element all link to the second table
 SELECT * FROM table1 CROSS JOIN table2;
@@ -162,6 +177,7 @@ SELECT * FROM table1 CROSS JOIN table2;
 
 
 ### OPERATORS
+
 ```sql
 -- AVG for the avrage
 SELECT AVG(col1) as `avg_col` FROM table1;
@@ -182,8 +198,12 @@ SELECT * FROM UCASE(col1) as ucase_col1 FROM table1;
 -- (the column, the start point and the number of characters, we want to cut from)
 SELECT MID(firstname, 1, 4) as nn FROM table1;
 
--- TO Calculate the lenght of a column
+-- To Calculate the lenght of a column
 SELECT LENGTH(firstname) as length FROM table1;
+
+-- For Concatenation
+SELECT CONCAT(col1, col2) AS CONCAT_COL FROM table1;
+-- we can also CONCAT(col1, "delimiter", col2)
 ```
 
 ### CONSTRAINTS
@@ -211,67 +231,6 @@ CREATE TABLE IF NOT EXISTS customers(
 
     PRIMARY KEY (customer_id)
 );
-
-DESCRIBE TABLE customers;
-
-INSERT INTO customers (name, location) VALUES("tangua", "cameroun");
-INSERT INTO customers (name, location) VALUES ("acid", "india"), ("balo", "rdc");
-
-UPDATE customers
-SET location = "xxx", name = "yyy"
-WHERE cid = 2;
-SELECT * FROM customers;
-
-SELECT * FROM customers WHERE location IN ("france", "usa");
-
--- IS (NOT) NULL
-
-CREATE TABLE IF NOT EXISTS products(
-    product_id INT NOT NULL AUTO_INCREMENT,
-
-    name VARCHAR(20) NOT NULL,
-    description VARCHAR(100) DEFAULT "Product description",
-
-    PRIMARY KEY(product_id)
-);
-
-INSERT INTO products (name, description) VALUES("VABOUM", "short and quite range");
-SELECT * FROM products;
-
-ALTER TABLE products
-RENAME COLUMN product_id TO pid;
-
-DROP TABLE orders;
--- And we link them
-CREATE TABLE orders(
-    oid INT NOT NULL AUTO_INCREMENT,
-
-    product_id INT NOT NULL,
-    quantity INT(10) NOT NULL,
-    customer_id INT NOT NULL,
-
-    PRIMARY KEY (oid),
-    FOREIGN KEY (customer_id) REFERENCES customers(cid),
-    FOREIGN KEY (product_id) REFERENCES products(pid)
-);
-
-SELECT * FROM orders;
-INSERT INTO orders(product_id, quantity, customer_id) VALUES(1, 12, 1);
-INSERT INTO orders(product_id, quantity, customer_id) VALUES(3, 10, 2);
-INSERT INTO orders(product_id, quantity, customer_id) VALUES(2, 3, 1);
-
-SELECT
-    c.name AS user,
-    p.name AS product,
-    o.quantity AS quantity
-FROM orders o
-LEFT OUTER JOIN products p ON o.product_id = p.pid
-LEFT OUTER JOIN customers c ON o.customer_id = c.cid
-ORDER BY o.quantity ASC;
-
--- LEFT OUTER JOIN (with no NULL NULL items)
--- RIGHT OUTER JOIN (with NULL NULL items allowed)
--- ON same as WHERE
 
 ```
 
@@ -348,7 +307,12 @@ AUTO_INCREMENT = 100;
 ```sql
 -- to order by something and we can reverse with DESC
 ORDER BY attr (DESC/ASC)-- we can order with multiple attributes
+-- or
+-- we can also order by multiple attrs.
+ORDER BY attr1 DESC, attr2 ASC
+-- limit
 LIMIT 3
+LIMIT 10 OFFSET 3;
 WHERE attr IN ('test', 'test2')
 
 -- We can also use REGEXP
